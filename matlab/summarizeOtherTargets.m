@@ -42,25 +42,39 @@ n_GSM = length(GSM_list);
 
 for ii = 1:n_GSM
     load(fullfile('.', 'data', 'output', ['BF_isgMCS_' GSM_list{ii} '_TOP_5min.mat']));
-    clearvars -except ii TOP GSM_list n_GSM is_gMCS KO
+    clearvars -except ii TOP GSM_list n_GSM is_gMCS KO TOP_GSM
     n_KO = length(KO);
     n_is_gMCS = length(is_gMCS);
     fprintf('%d, GSM: %s, n_KO: %d, n_is_gMCS: %d\n', ii, GSM_list{ii}, n_KO, n_is_gMCS);
     TOP((ii-1)*n_KO+1:ii*n_KO, 1) = KO;
     TOP((ii-1)*n_KO+1:ii*n_KO, 2) = is_gMCS;
+
+    for j = (ii-1)*n_KO+1:ii*n_KO
+                TOP_GSM(j) = {GSM_list{ii,1}};
+    end
+
 end
 
 for ii = 1:n_GSM
     load(fullfile('.', 'data', 'output', ['BF_isgMCS_' GSM_list{ii} '_LAST_5min.mat']));
-    clearvars -except ii TOP LAST GSM_list n_GSM is_gMCS KO
+    clearvars -except ii TOP LAST GSM_list n_GSM is_gMCS KO TOP_GSM LAST_GSM
     n_KO = length(KO);
     n_is_gMCS = length(is_gMCS);
     fprintf('%d, GSM: %s, n_KO: %d, n_is_gMCS: %d\n', ii, GSM_list{ii}, n_KO, n_is_gMCS);
     LAST((ii-1)*n_KO+1:ii*n_KO, 1) = KO;
     LAST((ii-1)*n_KO+1:ii*n_KO, 2) = is_gMCS;
+
+    for j = (ii-1)*n_KO+1:ii*n_KO
+                LAST_GSM(j) = {GSM_list{ii,1}};
+    end
+
+
 end
 
-clearvars -except TOP LAST
+save('all_GSM_gene_results.mat', 'TOP', 'LAST', 'TOP_GSM', 'LAST_GSM');
+
+    
+clearvars -except TOP LAST 
 
 top_genes = unique(TOP(:, 1));
 n_top_genes = length(top_genes);

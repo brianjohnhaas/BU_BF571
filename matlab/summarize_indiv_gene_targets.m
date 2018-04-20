@@ -41,6 +41,9 @@ for ii = 1:n_last_files
     LAST((ii-1)*n_KO+1:ii*n_KO, 2) = is_gMCS;
 end
 
+save('all_GSM_indiv_gene_results.mat', 'TOP', 'LAST', 'top_files', 'last_files')
+
+
 clearvars -except TOP LAST
 
 top_genes = unique(TOP(:, 1));
@@ -81,7 +84,7 @@ TOP = [mat2cell(summary_TOP(:, 1), ones(n_top_genes, 1), 1), symbol_entrez.symbo
 [~, ~, ind] = intersect(summary_LAST(:, 1), symbol_entrez.entrez, 'stable');
 LAST = [mat2cell(summary_LAST(:, 1), ones(n_last_genes, 1), 1), symbol_entrez.symbol(ind), mat2cell(summary_LAST(:, 2:end), ones(n_last_genes, 1), ones(3, 1))];
 
-save('indiv_results.csv', 'TOP', 'LAST')
+save('indiv_results.mat', 'TOP', 'LAST')
 
 % xlswrite('summary_otherTargets_30clines.xlsx', TOP, 'Achilles Essential');
 % xlswrite('summary_otherTargets_30clines.xlsx', LAST, 'Achilles Not Essential');
