@@ -83,9 +83,9 @@ summary_TOP = [summary_TOP(~pos, :); summary_TOP(pos, :)];
 for i = 1:n_last_genes
     pos = find(LAST(:, 1) == last_genes(i));
     summary_LAST(i, 1) = last_genes(i);
-    n_ok = sum(LAST(pos, 2) == -1);
+    n_ok = sum(LAST(pos, 2) == 1);
     n_0 = sum(LAST(pos, 2) == 0);
-    n_error = sum(LAST(pos, 2) == 1);
+    n_error = sum(LAST(pos, 2) == -1);
     summary_LAST(i, 2) = n_ok;
     summary_LAST(i, 3) = n_error;
     summary_LAST(i, 4) = n_0;
@@ -99,5 +99,9 @@ load('symbol_vs_entrez.mat');
 TOP = [mat2cell(summary_TOP(:, 1), ones(n_top_genes, 1), 1), symbol_entrez.symbol(ind), mat2cell(summary_TOP(:, 2:end), ones(n_top_genes, 1), ones(3, 1))];
 [~, ~, ind] = intersect(summary_LAST(:, 1), symbol_entrez.entrez, 'stable');
 LAST = [mat2cell(summary_LAST(:, 1), ones(n_last_genes, 1), 1), symbol_entrez.symbol(ind), mat2cell(summary_LAST(:, 2:end), ones(n_last_genes, 1), ones(3, 1))];
+
+save('results.mat', 'TOP', 'LAST')
+
+
 % xlswrite('summary_otherTargets_30clines.xlsx', TOP, 'Achilles Essential');
 % xlswrite('summary_otherTargets_30clines.xlsx', LAST, 'Achilles Not Essential');
