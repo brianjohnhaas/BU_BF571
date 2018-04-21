@@ -1,0 +1,6 @@
+ 0 :  reached time limit
+
+-1 : infeasible solution (not synthetic lethal)
+
+1 : otherwise feasible solution  (presumably synthetic lethal)
+
