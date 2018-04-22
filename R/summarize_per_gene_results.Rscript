@@ -1,0 +1,22 @@
+#!/usr/bin/env Rscript
+
+args<-commandArgs(TRUE)
+
+if (length(args) == 0) {
+    stop("Error, require params: consolidated_dat_filename");
+}
+
+filename = args[1]
+
+library(tidyverse)
+
+data = read.table(filename, header=T)
+
+cplex_tally = data %>% select(sym, cplex) %>% group_by(sym, cplex) %>% tally %>% spread(cplex, n, fill=0)
+
+cplex_tally_filename = paste0(filename, '.cplex_tally.tsv')
+write.table(as.data.frame(cplex_tally), file=cplex_tally_filename, quote=F, sep="\t", row.names=F)
+
+colsums_filename = paste0(filename, ".cplex_tally.colsums.tsv")
+write.table(t(colSums(as.data.frame(cplex_tally)[,2:4])), file=colsums_filename, quote=F, sep="\t", row.names=F)
+
